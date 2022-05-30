@@ -145,7 +145,7 @@ class GTAB:
         except ValueError as e:
             raise e
         except Exception as e:
-            input("Quota reached! Please change IP and press enter to continue.")
+            print("Quota reached! Please change IP and press enter to continue.")
             return self._check_keyword(keyword)
         return False
 
@@ -360,7 +360,7 @@ class GTAB:
                     except Exception as e:
                         with open(fpath_intermediate, 'wb') as f_out:
                             pickle.dump(query_cache, f_out, protocol=4)
-                        input("Quota reached! Please change IP and press enter to continue.")
+                        print("Quota reached! Please change IP and press enter to continue.")
                         df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
                         query_cache[cache_key] = df_query
                     t_ret[i] = df_query
@@ -420,7 +420,7 @@ class GTAB:
                             except Exception as e:
                                 with open(fpath_intermediate, 'wb') as f_out:
                                     pickle.dump(query_cache, f_out, protocol=4)
-                                input("Quota reached! Please change IP and press enter to continue.")
+                                print("Quota reached! Please change IP and press enter to continue.")
                                 df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
                             query_cache[cache_key] = df_query
                             ret[idx_new] = df_query
@@ -976,7 +976,7 @@ class GTAB:
             except ValueError as e:
                 raise e
             except Exception as e:
-                input("Quota reached! Please change IP and press enter to continue.")
+                print("Quota reached! Please change IP and press enter to continue.")
                 ts = self._query_google(keywords=[anchor, query]).iloc[:, 0:2]
 
             if anchor == query:
