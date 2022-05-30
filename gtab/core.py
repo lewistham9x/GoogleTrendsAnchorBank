@@ -145,16 +145,8 @@ class GTAB:
         except ValueError as e:
             raise e
         except Exception as e:
-            if "response" in dir(e) and e.response is not None:
-                if e.response.status_code == 429:
-                    if retry_on_429:
-                        input("Quota reached! Please change IP and press enter to continue.")
-                        return self._check_keyword(keyword)
-                    else:
-                        raise ConnectionError("Code 429: Query limit reached on this IP!")
-                self._print_and_log(f"\nBad keyword '{keyword}', because {e}")
-            else:
-                raise e
+            input("Quota reached! Please change IP and press enter to continue.")
+            return self._check_keyword(keyword)
         return False
 
     def _check_ts(self, ts):
@@ -368,12 +360,9 @@ class GTAB:
                     except Exception as e:
                         with open(fpath_intermediate, 'wb') as f_out:
                             pickle.dump(query_cache, f_out, protocol=4)
-                        if "response" in dir(e) and e.response is not None and e.response.status_code == 429:
-                            input("Quota reached! Please change IP and press enter to continue.")
-                            df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
-                            query_cache[cache_key] = df_query
-                        else:
-                            raise e
+                        input("Quota reached! Please change IP and press enter to continue.")
+                        df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
+                        query_cache[cache_key] = df_query
                     t_ret[i] = df_query
 
             self._print_and_log("Removing bad queries...")
@@ -431,11 +420,8 @@ class GTAB:
                             except Exception as e:
                                 with open(fpath_intermediate, 'wb') as f_out:
                                     pickle.dump(query_cache, f_out, protocol=4)
-                                if "response" in dir(e) and e.response is not None and e.response.status_code == 429:
-                                    input("Quota reached! Please change IP and press enter to continue.")
-                                    df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
-                                else:
-                                    raise e
+                                input("Quota reached! Please change IP and press enter to continue.")
+                                df_query = self._query_google(keywords=kw_group).iloc[:, 0:5]
                             query_cache[cache_key] = df_query
                             ret[idx_new] = df_query
                         idx_new += 1
@@ -652,7 +638,7 @@ class GTAB:
             print(f"Config file: {os.path.join(self.dir_path, 'config', 'config_py.json')}")
         print(self.CONFIG)
 
-    def set_options(self, pytrends_config=None, gtab_config=None, conn_config=None, overwite_file: bool = False):
+    def set_options(self, pytrends_config=None, gtab_config=None, conn_config=None, overwite_file: bool = True):
         """
         Overwrites specified options. This can also be done manually by editing 'config_py.json' in the active
         directory.
@@ -990,13 +976,8 @@ class GTAB:
             except ValueError as e:
                 raise e
             except Exception as e:
-                if "response" in dir(e):
-                    if e.response.status_code == 429:
-                        input("Quota reached! Please change IP and press enter to continue.")
-                        ts = self._query_google(keywords=[anchor, query]).iloc[:, 0:2]
-                else:
-                    self._print_and_log(f"Google query '{query}' failed because: {str(e)}")
-                    break
+                input("Quota reached! Please change IP and press enter to continue.")
+                ts = self._query_google(keywords=[anchor, query]).iloc[:, 0:2]
 
             if anchor == query:
                 query = "tmp"
