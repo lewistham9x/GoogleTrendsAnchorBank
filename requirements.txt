@@ -14,7 +14,7 @@ pandas>=1.0.3
 pip>=20.1
 pylint>=2.5.2
 python-dateutil>=2.8.1
-git+https://github.com/lewistham9x/pytrends#egg=pytrends
+pytrends
 pytz>=2020.1
 requests>=2.23.0
 rope>=0.17.0
